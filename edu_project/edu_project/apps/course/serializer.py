@@ -24,13 +24,13 @@ class CourseTeacherSerlalizer(ModelSerializer):
 #
 class CourseModelSerializer(ModelSerializer):
     '''课程列表'''
-    # 序列化器嵌套查询老师
+    # 序列化器嵌套查询老师信息
     teacher = CourseTeacherSerlalizer()
-
+    '''给一个活动的名字  优惠活动的名称"activity_name" '''
     class Meta:
         model = Course
         fields = ["id", "name", "course_img", "students", "lessons",
-                  "pub_lessons", "price", "teacher", "lesson_list",'brief_html']
+                  "pub_lessons", "price", "teacher", "lesson_list",'brief_html',"activity_name","now_price"]
 
 
 class CourseTeacherSerializer(ModelSerializer):
@@ -50,7 +50,7 @@ class CourseLessonModelSerializer(ModelSerializer):
     class Meta:
         model = Course
         fields = ["id", "name", "level_style", "students", "lessons",
-                  "pub_lessons", "price", "teacher", "course_img","videos",'brief_html']
+                  "pub_lessons", "price", "teacher", "course_img","videos",'brief_html',"activity_name",'now_time',"now_price"]
 
 
 
@@ -67,3 +67,6 @@ class CourseCapterModelSerializer(ModelSerializer):
     class Meta:
         model = CourseChapter
         fields= ['id',"name","chapter","coursesections"]
+
+
+

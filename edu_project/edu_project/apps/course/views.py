@@ -28,20 +28,17 @@ class CourseListAPIView(ListAPIView):
 
 
 class CourseFilterListAPIView(ListAPIView):
-    '''根据条件查询课程'''
-
-    queryset = Course.objects.filter(is_show=True,is_delete=False).order_by("orders")
+    """根据条件查询课程"""
+    queryset = Course.objects.filter(is_show=True, is_delete=False).order_by("orders")
     serializer_class = CourseModelSerializer
-
-    #根据不同的分类信息查询讯息 查不同的课程
-    filter_backends = [DjangoFilterBackend,OrderingFilter]
-    lookup_field = ("course_category")
-
-    #排序
-    ordering_fields = ("id", "students","price")
-
-    # 分页 只能有一个
+    # 根据不同的id查询不同的的课程
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_fields = ("course_category",)
+    # 对她进行排序排序，
+    ordering_fields = ("id", "students", "price")
+    # 给页面进行分页
     pagination_class = CoursePageNumber
+
 
 
 
@@ -54,6 +51,7 @@ class CourseLessonListAPIView(RetrieveAPIView):
 
 
 class CourseCapterAPIView(ListAPIView):
+    '''课程章节对用的课时是哪个'''
     queryset = CourseChapter.objects.filter(is_show=True,is_delete=False).order_by("orders","id")
     serializer_class = CourseCapterModelSerializer
     filter_backends = [DjangoFilterBackend]

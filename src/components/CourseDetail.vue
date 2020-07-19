@@ -17,12 +17,13 @@
           <h3 class="course-name">{{data.name}}</h3>
           <p class="data">在读:{{data.students}}人&nbsp;&nbsp;&nbsp;&nbsp;课程总时长：{{data.lessons}}/{{data.lessons==data.pub_lessons?'更新完成':`已更新${data.pub_lessons}课时`}}&nbsp;&nbsp;&nbsp;&nbsp;等级：{{data.level_title}}</p>
           <div class="sale-time">
-            <p class="sale-type">限时免费</p>
-            <p class="expire">距离结束：仅剩 110天 13小时 33分 <span class="second">08</span> 秒</p>
+            <p class="sale-type">{{data.activity_name}}</p>
+            <p class="expire">距离结束：仅剩 {{parseInt(data.now_time/24/3600)}}天 {{parseInt(data.now_time/3600%24)}}小时
+              {{parseInt(data.now_time/60%60)}}分 <span class="second">{{parseInt(data.now_time%60)}}</span> 秒</p>
           </div>
           <p class="course-price">
             <span>活动价</span>
-            <span class="discount">¥0.00</span>
+            <span class="discount">¥{{data.now_price}}</span>
             <span class="original">{{data.price}}</span>
           </p>
           <div class="buy">
@@ -148,7 +149,7 @@
       },
       //发表评论
       add_discuss() {
-        this.mylist.push(this.add)
+        this.mylist.push(this.add);
         this.add = ''
       },
       //获取对应章节下的课时信息
@@ -188,10 +189,24 @@
           method: 'get',
 
         }).then(success => {
-          this.data = success.data//取值
-          //替换视频和图片
+          this.data = success.data;   //取值
+          //视频播放
           this.playerOptions.sources[0].src = success.data.videos;
           this.playerOptions.poster = success.data.course_img;
+
+        // 设置课程活动的倒计时
+        if (this.data.now_time > 0) {
+            let timer = setInterval(() => {
+                if (this.data.now_time > 1) {
+                    this.data.now_time -= 1
+                } else {
+                    clearInterval(timer)
+                }
+            }, 1000)
+            }
+
+    }).catch(error => {
+        console.log(error.response);
         })
       },
 

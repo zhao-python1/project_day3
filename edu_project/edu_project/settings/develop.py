@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'user',
     'course',
     'shop',
+    'sel',
+    'django_filters',
     # 富文本编辑器配置
     'ckeditor',  # 富文本编辑器
     'ckeditor_uploader',  # 富文本编辑器的上传模块
@@ -140,7 +142,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

@@ -6,6 +6,7 @@ import Register from "../components/Register";
 import Course from "../components/Course";
 import CourseDetail from "../components/CourseDetail";
 import Shop from "../components/Shop";
+import Settlement from "../components/Settlement";
 
 
 
@@ -47,6 +48,11 @@ export default new Router({
           path: '/shop',
           name:'Shop',
           component:Shop,
+    },
+    {
+          path: '/settlement',
+          name: 'Settlement',
+          component:Settlement,
     },
 
 

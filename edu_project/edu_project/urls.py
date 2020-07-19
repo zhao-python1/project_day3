@@ -33,6 +33,7 @@ urlpatterns = [
     # 根路由
     # 富文本编辑器的路由
     path("ckeditor/", include("ckeditor_uploader.urls")),
+    path("sel/", include("sel.urls")),
 
 ]
 import first_one

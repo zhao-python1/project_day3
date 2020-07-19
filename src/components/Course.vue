@@ -1,3 +1,201 @@
+<!--<template>-->
+
+
+  <!--<div class="course">-->
+    <!--<Header></Header>-->
+
+    <!--<div class="main">-->
+      <!--&lt;!&ndash; 筛选条件 &ndash;&gt;-->
+      <!--<div class="condition">-->
+        <!--<ul class="cate-list">-->
+          <!--<li class="title">课程分类:</li>-->
+          <!--<li @click="category=0" :class="category==0?'this':''">全部</li>-->
+          <!--<li v-for="cate in category_list" @click="category=cate.id" :class="category==cate.id?'this':''">-->
+            <!--{{cate.name}}-->
+          <!--</li>-->
+        <!--</ul>-->
+
+        <!--<div class="ordering">-->
+          <!--<ul>-->
+            <!--<li class="title">筛&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选:</li>-->
+            <!--<li class="default" @click="change_order_type('id')" :class="change_order_class('id')">默认</li>-->
+            <!--<li class="hot" @click="change_order_type('students')" :class="change_order_class('students')">-->
+              <!--人气-->
+            <!--</li>-->
+            <!--<li class="price" @click="change_order_type('price')" :class="change_order_class('price')">价格-->
+            <!--</li>-->
+          <!--</ul>-->
+          <!--<p class="condition-result">共21个课程</p>-->
+        <!--</div>-->
+
+      <!--</div>-->
+      <!--&lt;!&ndash; 课程列表 &ndash;&gt;-->
+      <!--<div class="course-list">-->
+
+        <!--<div class="course-item" v-for="course in course_list">-->
+          <!--<div class="course-image">-->
+            <!--<img :src="course.course_img" alt="">-->
+          <!--</div>-->
+          <!--<div class="course-info">-->
+            <!--<h3>-->
+              <!--<router-link :to="/detail/+course.id">{{course.name}}</router-link>-->
+              <!--<span><img src="/static/image/avatar1.svg" alt="">{{course.students}}人已加入学习</span>-->
+            <!--</h3>-->
+            <!--<p class="teather-info">huxz 百知教育教学总监-->
+              <!--<span>共{{course.lessons}}课时/{{course.lessons==course.pub_lessons?'更新完成':`已更新${course.pub_lessons}课时`}}</span>-->
+            <!--</p>-->
+
+            <!--<ul class="lesson-list">-->
+              <!--<li v-for="(lesson, key) in course.lesson_list" :key="key">-->
+                <!--<span class="lesson-title">{{key+1}} | 第{{key+1}}节：{{lesson.name}}</span>-->
+                <!--<span class="free" v-if="lesson.free_trail">免费</span>-->
+              <!--</li>-->
+
+            <!--</ul>-->
+            <!--<div class="pay-box">-->
+              <!--<span class="discount-type">限时免费</span>-->
+              <!--<span class="discount-price">￥0.00元</span>-->
+              <!--<span class="original-price">原价：{{course.price}}元</span>-->
+              <!--<span class="buy-now">立即购买</span>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<el-pagination-->
+      <!--background-->
+      <!--layout="prev, pager, next, sizes"-->
+      <!--:page-size="filters.size"-->
+      <!--:page-sizes="[2, 3, 5, 10]"-->
+      <!--@current-change="change_page"-->
+      <!--@size-change="size_change"-->
+      <!--:total="total">-->
+    <!--</el-pagination>-->
+
+    <!--<Footer></Footer>-->
+  <!--</div>-->
+<!--</template>-->
+
+<!--<script>-->
+  <!--export default {-->
+    <!--name: "Course",-->
+    <!--data() {-->
+      <!--return {-->
+        <!--category_list: [],  // 分类列表-->
+        <!--course_list: [],     //  课程列表-->
+        <!--category: 0,-->
+        <!--total: 0,   //  课程总数量-->
+        <!--// course_category: "",    // 分类id-->
+        <!--// 对数据进行过滤-->
+        <!--filters: {-->
+          <!--type: "id", // 筛选类型-->
+          <!--orders: "desc", // 排序类型  desc降序 asc  升序-->
+          <!--page: 1, // 分页的页码-->
+          <!--size: 2,    // 每页展示的数量-->
+        <!--},-->
+      <!--}-->
+    <!--},-->
+    <!--// 用于监听页面上某个值发生改变时做对应的操作-->
+    <!--watch: {-->
+      <!--// 监听category是否发生了改变  一旦发生改变说明用户要查看另一个分类的课程-->
+      <!--category() {-->
+        <!--// 重新查询课程-->
+        <!--this.get_course_list();-->
+      <!--},-->
+    <!--},-->
+    <!--methods: {-->
+      <!--// 获取所有课程的信息-->
+      <!--get_course_list() {-->
+        <!--// 如果根据过滤条件进行分页  则需要重新指定分页的值-->
+        <!--let filters = {-->
+          <!--// 切换分页后的页码-->
+          <!--page: this.filters.page,-->
+          <!--size: this.filters.size,-->
+        <!--};-->
+        <!--// 完成排序-->
+        <!--if (this.filters.orders === "desc") {-->
+          <!--filters.ordering = "-" + this.filters.type;-->
+        <!--} else {-->
+          <!--filters.ordering = this.filters.type;-->
+        <!--}-->
+        <!--// 判断是否要根据分类id'查询对应的课程-->
+        <!--if (this.category > 0) {-->
+          <!--filters.course_category = this.category;-->
+        <!--}-->
+        <!--console.log(this.category);-->
+        <!--this.$axios.get(`${this.$settings.HOST}course/list_filter/`, {-->
+          <!--params: filters-->
+        <!--}).then(response => {-->
+          <!--console.log(response.data);-->
+          <!--// 分页之前的-->
+          <!--// this.course_list = response.data;-->
+          <!--this.course_list = response.data.results;-->
+          <!--// 分页总数量-->
+          <!--this.total = response.data.count;-->
+        <!--}).catch(error => {-->
+          <!--console.log(error.response);-->
+        <!--})-->
+      <!--},-->
+      <!--// 获取所有分类信息-->
+      <!--get_all_category() {-->
+        <!--this.$axios.get(`${this.$settings.HOST}course/category/`).then(response => {-->
+          <!--this.category_list = response.data;-->
+        <!--})-->
+      <!--},-->
+      <!--// 改变排序的条件-->
+      <!--change_order_type(type) {-->
+        <!--console.log(type);-->
+        <!--// 通过click事件更改排序的条件-->
+        <!--if (this.filters.type === type && this.filters.orders === "asc") {-->
+          <!--this.filters.orders = 'desc';-->
+        <!--} else if (this.filters.type === type && this.filters.orders === "desc") {-->
+          <!--this.filters.orders = 'asc';-->
+        <!--}-->
+        <!--// 更改排序方式-->
+        <!--this.filters.type = type;-->
+        <!--// 重新获取排序的结果-->
+        <!--this.get_course_list();-->
+      <!--},-->
+      <!--// 控制高亮效果-->
+      <!--change_order_class(type) {-->
+        <!--// 更改选中的高亮效果-->
+        <!--if (this.filters.type === type && this.filters.orders === "asc") {-->
+          <!--return "this asc";-->
+        <!--} else if (this.filters.type === type && this.filters.orders === "desc") {-->
+          <!--return "this desc";-->
+        <!--} else {-->
+          <!--return "";-->
+        <!--}-->
+      <!--},-->
+      <!--// 分页-->
+      <!--change_page(page) {-->
+        <!--this.filters.page = page;-->
+        <!--this.get_course_list();-->
+      <!--},-->
+      <!--// 改变每页展示的课程数量-->
+      <!--size_change(size) {-->
+        <!--this.filters.size = size;-->
+        <!--// 改变每页展示的数量后必须重置页面-->
+        <!--this.filters.page = 1;-->
+        <!--this.get_course_list();-->
+      <!--},-->
+    <!--},-->
+    <!--created() {-->
+      <!--this.get_all_category();-->
+      <!--this.get_course_list();-->
+    <!--}-->
+  <!--}-->
+<!--</script>-->
+
+
+
+
+
+
+
+
+
 <template>
 
 
@@ -17,7 +215,7 @@
 
         <div class="ordering">
           <ul>
-            <li class="title">筛&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选:</li>
+            <li class="title">筛选:</li>
             <li class="default" @click="change_order_type('id')" :class="change_order_class('id')">默认</li>
             <li class="hot" @click="change_order_type('students')" :class="change_order_class('students')">
               人气
@@ -53,8 +251,8 @@
 
             </ul>
             <div class="pay-box">
-              <span class="discount-type">限时免费</span>
-              <span class="discount-price">￥0.00元</span>
+              <span class="discount-type" v-if="course.activity_name">{{course.activity_name}}</span>
+              <span class="discount-price">￥{{course.now_price}}元</span>
               <span class="original-price">原价：{{course.price}}元</span>
               <span class="buy-now">立即购买</span>
             </div>
@@ -78,29 +276,37 @@
 </template>
 
 <script>
+  import Header from "./common/Header"
+  import Footer from "./common/Footer"
+
   export default {
     name: "Course",
+    components:{
+      Header,Footer
+    },
     data() {
       return {
-        category_list: [],  // 分类列表
-        course_list: [],     //  课程列表
+        // 分类列表
+        category_list: [],
+        //  课程列表
+        course_list: [],
         category: 0,
-        total: 0,   //  课程总数量
-        // course_category: "",    // 分类id
+         //  课程总数量
+        total: 0,
         // 对数据进行过滤
         filters: {
           type: "id", // 筛选类型
-          orders: "desc", // 排序类型  desc降序 asc  升序
+          orders: "desc", // 排序类型
           page: 1, // 分页的页码
           size: 2,    // 每页展示的数量
         },
       }
     },
-    // 用于监听页面上某个值发生改变时做对应的操作
+    // 用于监听页面的改变
     watch: {
-      // 监听category是否发生了改变  一旦发生改变说明用户要查看另一个分类的课程
+      // 监听category改变没 改变了的话重新查询新的课程
       category() {
-        // 重新查询课程
+        // 重新查询新的一个课程
         this.get_course_list();
       },
     },
@@ -113,17 +319,15 @@
           page: this.filters.page,
           size: this.filters.size,
         };
-
-        // 完成排序
+        // 完成排序 判断排序的规则
         if (this.filters.orders === "desc") {
           filters.ordering = "-" + this.filters.type;
         } else {
-          filters.ordering = this.filters.type;
+            filters.ordering = this.filters.type;
         }
-
         // 判断是否要根据分类id'查询对应的课程
         if (this.category > 0) {
-          filters.course_category = this.category;
+            filters.course_category = this.category;
         }
         console.log(this.category);
         this.$axios.get(`${this.$settings.HOST}course/list_filter/`, {
@@ -131,7 +335,6 @@
         }).then(response => {
           console.log(response.data);
           // 分页之前的
-          // this.course_list = response.data;
           this.course_list = response.data.results;
           // 分页总数量
           this.total = response.data.count;
@@ -145,7 +348,8 @@
           this.category_list = response.data;
         })
       },
-      // 改变排序的条件
+
+      // 改变排序的条件 升序或者降序
       change_order_type(type) {
         console.log(type);
         // 通过click事件更改排序的条件
@@ -154,12 +358,15 @@
         } else if (this.filters.type === type && this.filters.orders === "desc") {
           this.filters.orders = 'asc';
         }
-        // 更改排序方式
+
+        // 更改他的排序方式
         this.filters.type = type;
-        // 重新获取排序的结果
+
+        //更改过后重新获取排序的结果
         this.get_course_list();
       },
-      // 控制高亮效果
+
+      // 控制点击时的标志亮
       change_order_class(type) {
         // 更改选中的高亮效果
         if (this.filters.type === type && this.filters.orders === "asc") {
@@ -170,13 +377,11 @@
           return "";
         }
       },
-
-      // 分页
+      // 分页的显示
       change_page(page) {
         this.filters.page = page;
         this.get_course_list();
       },
-
       // 改变每页展示的课程数量
       size_change(size) {
         this.filters.size = size;
@@ -184,8 +389,8 @@
         this.filters.page = 1;
         this.get_course_list();
       },
-
     },
+    //生命周期的
     created() {
       this.get_all_category();
       this.get_course_list();
