@@ -34,6 +34,7 @@ urlpatterns = [
     # 富文本编辑器的路由
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path("sel/", include("sel.urls")),
+    path("pay/", include("payments.urls")),
 
 ]
 import first_one
